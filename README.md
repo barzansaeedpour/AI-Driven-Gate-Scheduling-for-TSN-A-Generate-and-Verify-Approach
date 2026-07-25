@@ -46,22 +46,20 @@ This project is fully containerized. You do not need to install the Python libra
    docker run --rm tsn-scheduler
    ```
 
+
 ## Expected Output
-When you run the project, the Genetic Algorithm will create generations of possible schedules. Once it finds an optimal one, it sends it to the Z3 Solver. You will see an output similar to this:
+Upon executing the container, the Genetic Algorithm explores multiple generations to find an optimal, collision-free schedule. This candidate is then passed directly to the Z3 Solver for mathematical proof. You will see terminal output similar to this:
 
-text
---- LOOP 1 ---
-Running Genetic Algorithm to generate a schedule...
-Best individual found by GA: [0.0, 4.0, 9.0]
-Fitness (Penalty): (0.0,)
+```text
+========== GA-VERIFY LOOP 1 ==========
+--- Phase 2: Generating Schedule (Genetic Algorithm) ---
+GA Proposed -> Stream_A: Start at 0, Duration: 2, Deadline: 5
+GA Proposed -> Stream_B: Start at 3, Duration: 3, Deadline: 10
+GA Proposed -> Stream_C: Start at 7, Duration: 4, Deadline: 15
 
-Z3 Verification Result: ✅ VERIFIED
-Valid Schedule Details:
-  Stream_A: starts at 0, ends at 2 (Deadline: 5)
-  Stream_B: starts at 4, ends at 7 (Deadline: 10)
-  Stream_C: starts at 9, ends at 13 (Deadline: 15)
-
-Success! A valid schedule was found and verified.
+--- Phase 3: Formal Verification with Z3 ---
+✅ VERIFIED: The GA schedule is mathematically VALID.
+```
 
 ## Future Work
 * **Scale up the network:** Add multiple switches and more complex routing topologies using `NetworkX`.
