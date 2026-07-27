@@ -4,31 +4,36 @@
 ## Project Overview
 This project automates the creation and verification of Gate Control Lists (GCL) for Time-Sensitive Networking (TSN), specifically based on the **IEEE 802.1Qbv (Time-Aware Shaper)** standard. 
 
-Calculating the perfect schedule for network gates to avoid collisions and meet strict deadlines is a complex problem. To solve this, the project uses a **Generate-and-Verify** architecture: it uses Artificial Intelligence (Genetic Algorithms) to generate a smart schedule, and then uses Formal Verification (Z3 Solver) to mathematically prove that the schedule is valid and safe.
+Calculating collision-free schedules across multi-hop network topologies is a highly complex problem. To solve this, the project uses a **Generate-and-Verify** architecture: it uses a Genetic Algorithm (AI) to generate an optimized schedule across network links, and a Z3 Solver (Formal Verification) to mathematically prove the schedule is safe, before finally exporting it for network simulators.
 
 ## Architecture
-The system is built in three main phases:
+The system is built in four main phases:
 
-1. **Network Modeling:** 
-   Defines the network environment and data streams. Each stream is categorized as time-sensitive (critical) with a specific duration and a strict deadline.
+1. **Network Modeling (Topology & Routing):** 
+   Uses `NetworkX` to define End Systems (ES), Switches (SW), and directed links with propagation delays. Data streams are defined with specific multi-hop routing paths, durations, and strict end-to-end deadlines.
    
-2. **Generate Phase (AI/Heuristic):**
-   Uses a **Genetic Algorithm (GA)** to explore different scheduling possibilities. The fitness function is designed to minimize penalties like missed deadlines or packet collisions. It quickly finds a highly optimized schedule.
+2. **Generate Phase (Genetic Algorithm):**
+   Uses **DEAP** to explore scheduling possibilities (injection times at the source). The fitness function calculates store-and-forward delays and penalizes missed deadlines or overlaps on shared physical links.
    
 3. **Verify Phase (Formal Verification):**
-   Passes the generated schedule to the **Z3 Theorem Prover**. Z3 checks the schedule against strict mathematical constraints (e.g., $start\_time + duration \le deadline$ and no overlapping streams). This ensures 100% deterministic safety.
+   Passes the generated source injection times to the **Z3 Theorem Prover**. Z3 checks the schedule against strict mathematical constraints across the entire route (e.g., $t_{arrival} + duration \le deadline$ and $End_1 \le Start_2 \lor End_2 \le Start_1$ on shared links). 
+   
+4. **Export Phase (OMNeT++ / NeSTiNg):**
+   Once verified, the link-specific schedules are automatically parsed and exported into a standard XML format compatible with OMNeT++ (NeSTiNg) for network simulation.
 
 ### Architecture Diagram
-![TSN](./files/TSN.png)
+![TSN](./files/flowchart2.png)
 
 ## Technologies Used
-* **Python 3.9+**: Core programming language.
+* **python:3.10-slim**: Core programming language.
+* **NetworkX**: Used for modeling the multi-hop network graph and tracking routing paths.
 * **DEAP**: Evolutionary computation framework used for the Genetic Algorithm.
 * **Z3-Solver**: Theorem prover from Microsoft Research used for formal verification.
+* **XML Processing**: Standard libraries used to generate OMNeT++ compatible configuration files.
 * **Docker**: Used to containerize the application for easy and consistent execution.
 
 ## How to Run
-This project is fully containerized. You do not need to install the Python libraries manually on your machine. Just make sure you have [Docker](https://www.docker.com/) installed.
+This project is fully containerized. Make sure you have [Docker](https://www.docker.com/) installed.
 
 1. **Clone the repository:**
    ```bash
@@ -43,30 +48,49 @@ This project is fully containerized. You do not need to install the Python libra
 
 3. **Run the container:**
    ```bash
-   docker run --rm tsn-scheduler
+   docker-compose up
    ```
 
-
 ## Expected Output
-Upon executing the container, the Genetic Algorithm explores multiple generations to find an optimal, collision-free schedule. This candidate is then passed directly to the Z3 Solver for mathematical proof. You will see terminal output similar to this:
+Upon execution, the GA explores generations to find a collision-free schedule, which Z3 mathematically proves. Finally, an XML file is generated. 
 
+**Terminal Output:**
 ```text
 ========== GA-VERIFY LOOP 1 ==========
---- Phase 2: Generating Schedule (Genetic Algorithm) ---
-GA Proposed -> Stream_A: Start at 0, Duration: 2, Deadline: 5
-GA Proposed -> Stream_B: Start at 3, Duration: 3, Deadline: 10
-GA Proposed -> Stream_C: Start at 7, Duration: 4, Deadline: 15
+--- Phase 2: Generating Schedule (GA) ---
+GA Injection -> Stream_A: Source Start at 5
+GA Injection -> Stream_B: Source Start at 0
+GA Injection -> Stream_C: Source Start at 1
 
 --- Phase 3: Formal Verification with Z3 ---
-✅ VERIFIED: The GA schedule is mathematically VALID.
+✅ VERIFIED: The GA schedule is mathematically VALID across the network.
+
+--- Phase 4: Exporting GCL to OMNeT++ XML ---
+✅ Exported schedule to 'omnet_gcl.xml'
+```
+**Generated `omnet_gcl.xml` Snippet:**
+
+```xml
+<?xml version="1.0" ?>
+<schedule>
+    <port name="ES1_to_SW1">
+        <entry stream="Stream_C" start_time="1" duration="1"/>
+        <entry stream="Stream_A" start_time="5" duration="2"/>
+    </port>
+    <port name="SW1_to_ES3">
+        <entry stream="Stream_B" start_time="4" duration="3"/>
+        <entry stream="Stream_A" start_time="8" duration="2"/>
+    </port>
+    <port name="ES2_to_SW1">
+        <entry stream="Stream_B" start_time="0" duration="3"/>
+    </port>
+    <port name="SW1_to_ES4">
+        <entry stream="Stream_C" start_time="3" duration="1"/>
+    </port>
+</schedule>
 ```
 
 ## Future Work
-* **Scale up the network:** Add multiple switches and more complex routing topologies using `NetworkX`.
-* **Reinforcement Learning (RL):** Replace the Genetic Algorithm with an RL agent (like PPO or DQN) to learn optimal scheduling policies over time.
-* **Hardware Co-simulation:** Connect the generated Gate Control Lists (GCL) to a realistic network simulator like OMNeT++.
+* **Reinforcement Learning (RL):** Replace the Genetic Algorithm with an RL agent (like PPO or DQN) to learn optimal scheduling policies dynamically.
+* **Hardware Implementation:** Deploy the generated configurations onto actual TSN-capable edge hardware (e.g., Linux Qdisc/Taprio or Jetson platforms).
 
-## Contact
-**Barzan Saeedpour**
-* **Role:** Lead ML Engineer | Hardware-Software Co-optimization Enthusiast
-* **Email:** barzansaeedpour@gmail.com

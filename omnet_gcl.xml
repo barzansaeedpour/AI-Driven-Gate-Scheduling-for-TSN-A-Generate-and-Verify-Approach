@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<schedule>
+    <port name="ES1_to_SW1">
+        <entry stream="Stream_C" start_time="1" duration="1"/>
+        <entry stream="Stream_A" start_time="5" duration="2"/>
+    </port>
+    <port name="SW1_to_ES3">
+        <entry stream="Stream_B" start_time="4" duration="3"/>
+        <entry stream="Stream_A" start_time="8" duration="2"/>
+    </port>
+    <port name="ES2_to_SW1">
+        <entry stream="Stream_B" start_time="0" duration="3"/>
+    </port>
+    <port name="SW1_to_ES4">
+        <entry stream="Stream_C" start_time="3" duration="1"/>
+    </port>
+</schedule>
