@@ -33,7 +33,7 @@ The system is built in four main phases:
 * **Docker**: Used to containerize the application for easy and consistent execution.
 
 ## How to Run
-This project is fully containerized. Make sure you have [Docker](https://www.docker.com/) installed.
+This project is fully containerized. Make sure you have [Docker](https://www.docker.com/) and Docker Compose installed.
 
 1. **Clone the repository:**
    ```bash
@@ -41,15 +41,11 @@ This project is fully containerized. Make sure you have [Docker](https://www.doc
    cd AI-Driven-Gate-Scheduling-for-TSN-A-Generate-and-Verify-Approach
    ```
 
-2. **Build the Docker image:**
+2. **Build and run the container:**
    ```bash
-   docker build -t tsn-scheduler .
+   docker-compose up --build
    ```
 
-3. **Run the container:**
-   ```bash
-   docker-compose up
-   ```
 
 ## Expected Output
 Upon execution, the GA explores generations to find a collision-free schedule, which Z3 mathematically proves. Finally, an XML file is generated. 
