@@ -22,7 +22,11 @@ The system is built in four main phases:
    Once verified, the link-specific schedules are automatically parsed and exported into a standard XML format compatible with OMNeT++ (NeSTiNg) for network simulation.
 
 ### Architecture Diagram
-![TSN](./files/flowchart3.png)
+![TSN](./files/f.png)
+
+to see better quality:
+[PDF](./files/f.pdf)
+
 
 ## Technologies Used
 * **python:3.10-slim**: Core programming language.

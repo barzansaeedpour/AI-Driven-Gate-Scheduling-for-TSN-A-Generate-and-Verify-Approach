@@ -1,0 +1,7 @@
+Scenario,Algorithm,Penalty,Z3_Verified,Train_Time_Seconds,Inference_Time_Seconds
+Small,GA,0,True,-,0.0949
+Small,RL_PPO,0,True,18.712,0.002327
+Small,SA,0,True,-,0.0006
+Medium,GA,0,True,-,0.0879
+Medium,RL_PPO,70,False,13.5045,0.003258
+Medium,SA,40,False,-,0.0057
