@@ -1,22 +1,16 @@
 # AI-Driven Gate Scheduling for TSN: A Generate-and-Verify Research Prototype
 
-## Paper
-This repository is accompanied by a conference-style paper describing the motivation, problem formulation, generate-and-verify framework, and experimental results.
-
-**Title:** *AI-Driven Gate Scheduling for Time-Sensitive Networking: A Generate-and-Verify Approach*
-
-You can find the paper here:
-
-- [PDF](./files/paper.pdf)
-
-The paper presents the scheduling model, the GA / SA / PPO / Z3-based comparison, the conflict-guided repair mechanism, and the benchmark results discussed in this repository.
-
-
 
 ## Overview
 This repository presents a research-oriented prototype for **AI-driven scheduling and formal verification in Time-Sensitive Networking (TSN)**. The project focuses on **source injection-time scheduling** for deterministic traffic over multi-hop TSN topologies under **IEEE 802.1Qbv-inspired** timing and non-overlap constraints.
 
 The main goal is to study how **learning-based and search-based AI methods** can be combined with **deterministic verification** to address hard scheduling problems in **distributed cyber-physical real-time systems**.
+
+This repository is accompanied by a paper draft describing the motivation, problem formulation, generate-and-verify framework, and experimental results.
+
+You can find the paper draft here:
+
+- [PDF](./files/paper.pdf)
 
 Instead of relying on a single optimization strategy, the framework implements and compares several schedule-generation approaches:
 
