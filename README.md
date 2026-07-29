@@ -7,7 +7,7 @@ This repository is accompanied by a conference-style paper describing the motiva
 
 You can find the paper here:
 
-- [PDF](./paper/AI-Driven_Gate_Scheduling_for_TSN_A_Generate_and_Verify_Approach.pdf)
+- [PDF](./files/paper.pdf)
 
 The paper presents the scheduling model, the GA / SA / PPO / Z3-based comparison, the conflict-guided repair mechanism, and the benchmark results discussed in this repository.
 
