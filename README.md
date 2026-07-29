@@ -10,7 +10,7 @@ This repository is accompanied by a paper draft describing the motivation, probl
 
 You can find the paper draft here:
 
-- [PDF](./files/paper.pdf)
+- [Paper Draft PDF](./files/paper.pdf)
 
 Instead of relying on a single optimization strategy, the framework implements and compares several schedule-generation approaches:
 
