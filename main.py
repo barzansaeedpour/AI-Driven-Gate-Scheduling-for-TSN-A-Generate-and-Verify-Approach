@@ -599,8 +599,8 @@ def generate_academic_plots(summary_results):
     ax.legend(fontsize=8)
     ax.grid(axis='y', linestyle='--', alpha=0.7)
     plt.tight_layout()
-    plt.savefig("mean_penalty_comparison.pdf")
-    plt.savefig("mean_penalty_comparison.png", dpi=300)
+    plt.savefig("Results/mean_penalty_comparison.pdf")
+    plt.savefig("Results/mean_penalty_comparison.png", dpi=300)
     plt.close()
 
     # Success Rate Plot
@@ -615,8 +615,8 @@ def generate_academic_plots(summary_results):
     ax.legend(fontsize=8)
     ax.grid(axis='y', linestyle='--', alpha=0.7)
     plt.tight_layout()
-    plt.savefig("success_rate_comparison.pdf")
-    plt.savefig("success_rate_comparison.png", dpi=300)
+    plt.savefig("Results/success_rate_comparison.pdf")
+    plt.savefig("Results/success_rate_comparison.png", dpi=300)
     plt.close()
 
     # Runtime Plot
@@ -631,8 +631,8 @@ def generate_academic_plots(summary_results):
     ax.legend(fontsize=8)
     ax.grid(axis='y', linestyle='--', alpha=0.7)
     plt.tight_layout()
-    plt.savefig("runtime_comparison.pdf")
-    plt.savefig("runtime_comparison.png", dpi=300)
+    plt.savefig("Results/runtime_comparison.pdf")
+    plt.savefig("Results/runtime_comparison.png", dpi=300)
     plt.close()
 
     print("\n✅ Academic plots generated successfully.")
@@ -699,7 +699,7 @@ if __name__ == "__main__":
                 print(f"Penalty={metrics['penalty']}, Verified={verified}, Time={inf_time}")
 
     # Save raw results
-    raw_csv = "raw_comparison_results.csv"
+    raw_csv = "Results/raw_comparison_results.csv"
     with open(raw_csv, mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([
@@ -717,14 +717,14 @@ if __name__ == "__main__":
     print(f"\n✅ Raw results saved to {raw_csv}")
 
     # Save schedules
-    schedule_csv = "schedule_details.csv"
+    schedule_csv = "Results/schedule_details.csv"
     save_schedule_details(schedule_csv, schedule_rows)
     print(f"✅ Schedule details saved to {schedule_csv}")
 
     # Summary
     summary_results = summarize_results(raw_results)
 
-    summary_csv = "summary_results.csv"
+    summary_csv = "Results/summary_results.csv"
     with open(summary_csv, mode='w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([
